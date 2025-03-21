@@ -1,3 +1,3 @@
 #!/bin/sh
 
-emacs -Q --script publish.el
+emacs -Q --batch -l ./publish.el

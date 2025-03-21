@@ -25,6 +25,14 @@
       org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />")
 
 ;; Define the publishing project
+(defun lf/blogs-sitemap (title files)
+  (format "#+title: %s\n\n%s"
+          title
+          (mapconcat (lambda (file)
+                       (format "- %s\n" file))
+                     (cadr files)
+                     "\n")))
+
 (setq org-publish-project-alist
       (list '("littlefox:main"
               :base-directory "./content"
@@ -46,12 +54,13 @@
               :publishing-function org-html-publish-to-html
               :auto-sitemap t
               :sitemap-title "Little Fox Blogs"
-              :sitemap-filename "../blogs.org")
+              :sitemap-filename "../blogs.org"
+              :sitemap-function lf/blogs-sitemap)
             ))
 ;; Generate the site output
 (org-publish-all t)
 
 (message "Build complete!")
 
-
-(message "Build complete!")
+(provide 'publish)
+;;; publish.el ends here
