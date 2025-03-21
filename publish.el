@@ -28,15 +28,19 @@
       org-html-head-include-default-style nil ;; Use our own styles
       org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />")
 ;; Define functions
+;; TODO for github pages
+(defvar lf/base-url "https://hienhm2212.github.io/my-org-website" "Base URL for GitHub Pages.")
+
 (defun lf/header ()
   "Return custom HTML header using XML"
   (sxml-to-xml
    '(header
      (h1 "Welcome to Little Fox")
-     (nav
-      (a (@ (href "/")) "Home") " "
-      (a (@ (href "/blogs")) "Blogs") " "
-      (a (@ (href "/contact")) "Contact")))))
+     (nav (@ (class "nav"))
+          (a (@ (class "nav-link") (href "/my-org-website/")) "Home") " "
+          (a (@ (class "nav-link") (href "/my-org-website/blogs")) "Blogs") " "
+          (a (@ (class "nav-link") (href "/my-org-website/contact")) "Contact")
+          ))))
 
 (defun lf/footer ()
   "Return custom HTML footer using XML"
