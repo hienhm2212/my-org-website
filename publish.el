@@ -1,5 +1,7 @@
 ;; Set the package installation directory so that packages aren't stored in the
 ;; ~/.emacs.d/elpa path.
+;; Set the package installation directory so that packages aren't stored in the
+;; ~/.emacs.d/elpa path.
 (require 'package)
 (setq package-user-dir (expand-file-name "./.packages"))
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -24,19 +26,32 @@
 
 ;; Define the publishing project
 (setq org-publish-project-alist
-      (list
-       (list "org-site:main"
-             :recursive t
-             :base-directory "./content"
-             :publishing-function 'org-html-publish-to-html
-             :publishing-directory "./public"
-             :with-author nil           ;; Don't include author name
-             :with-creator t            ;; Include Emacs and Org versions in footer
-             :with-toc t                ;; Include a table of contents
-             :section-numbers nil       ;; Don't include section numbers
-             :time-stamp-file nil)))    ;; Don't include time stamp in file
-
+      (list '("littlefox:main"
+              :base-directory "./content"
+              :base-extension "org"
+              :publishing-directory "./public"
+              :publishing-function org-html-publish-to-html
+              :with-title nil
+              :with-timestamps nil)
+            '("littlefox:assets"
+              :base-directory "./assets"
+              :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|woff2\\|ttf"
+              :publishing-directory "./public"
+              :recursive t
+              :publishing-function org-publish-attachment)
+            '("littlefox:blogs"
+              :base-directory "./content/blogs"
+              :base-extension "org"
+              :publishing-directory "./public/blogs"
+              :publishing-function org-html-publish-to-html
+              :auto-sitemap t
+              :sitemap-title "Little Fox Blogs"
+              :sitemap-filename "../blogs.org")
+            ))
 ;; Generate the site output
 (org-publish-all t)
+
+(message "Build complete!")
+
 
 (message "Build complete!")
