@@ -48,14 +48,54 @@
    '(footer
      (p "© 2025 Little Fox. All rights reserved."))))
 
-(defun lf/org-html-template(contents info)
-  "Add header and footer to contents with info."
-  (concat (lf/header) contents (lf/footer)))
+(cl-defun lf/generate-page (title
+                            content
+                            info
+                            &key
+                            (publish-date)
+                            (head-extra)
+                            (pre-content)
+                            (exclude-header)
+                            (exclude-footer))
+  "Generate a complete HTML page with optional header, footer and metadata."
+  (concat
+   "<!-- Generated on " (format-time-string "%Y-%m-%d @ %H:%M") "with Emacs Org Mode -->\n"
+   "<!DOCTYPE html>"
+   (sxml-to-xml
+    `(html (@ (lang "en"))
+           ;; Head section
+           (head
+            (meta (@ (charset "utf-8")))
+            (meta (@ (author "HienHM")))
+            (meta (@ (name "viewport")
+                     (content "width=device-width, initial-scale=1")))
+            (link (@ (rel "icon") (type "image/png") (href "/images/fox.png")))
+            (title ,(concat title " - Little Fox")))
+           ;; Body section
+           (body
+            ,@(unless exclude-header
+                `(,(lf/header)))
+            (div (@ (class "container"))
+                 (div (@ (class "site-post"))
+                      (h1 (@ (class "site-post-title")) ,title)
+                      ,(when publish-date
+                         `(p (@ (class "site-post-meta")) ,publish-date))
+                      ,(when pre-content pre-content)
+                      (div (@ (id "content")) ,content)))
+            ,@(unless exclude-footer
+                `(,(lf/footer))))))))
 
-(setq org-html-preamble (lambda (_)
-                          (lf/header))
-      org-html-postamble (lambda (_)
-                           (lf/footer)))
+(defun lf/org-html-template (contents backend info)
+  "Use custom HTML generation with contents, backend, and info."
+  (ignore backend) ;; Backend is not used in this function
+  (lf/generate-page (org-export-data (plist-get info :title) info)
+                    contents
+                    info
+                    :publish-date (org-export-data (org-export-get-date info "%B %e, %Y") info)))
+
+(setq org-html-preamble nil
+      org-html-postamble nil
+      org-export-filter-final-output-functions '(lf/org-html-template))
 
 ;; Define the publishing project
 (defun lf/blogs-sitemap (title files)
