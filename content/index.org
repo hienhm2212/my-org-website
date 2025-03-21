@@ -1,4 +1,4 @@
-#+TITLE: Example Site
+#+TITLE: Little Fox
 * Welcome to My Org Page
 Welcome to this simple web-like page in an Emacs Org file. You can navigate using the sections below.
 
