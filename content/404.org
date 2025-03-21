@@ -1,0 +1,22 @@
+#+TITLE: 404 - Page Not Found
+#+OPTIONS: toc:nil num:nil
+* 😢 Oops! Page Not Found
+
+It seems the page you are looking for doesn't exist.
+Maybe you mistyped the address or the page has been moved.
+
+[[/]] ← Return to the homepage
+
+---
+
+#+BEGIN_QUOTE
+"Not all those who wander are lost." — J.R.R. Tolkien
+#+END_QUOTE
+
+---
+
+* 📧 Contact Us
+
+If you believe this is an error, please let us know.
+- Email: support@example.com
+- Phone: +1 (123) 456-7890
