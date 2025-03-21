@@ -17,12 +17,41 @@
 
 ;; Load the publishing system
 (require 'ox-publish)
+(require 'htmlize)
+
+(use-package esxml
+  :ensure t)
 
 ;; Customize the HTML output
 (setq org-html-validation-link nil            ;; Don't show validation link
       org-html-head-include-scripts nil       ;; Use our own scripts
       org-html-head-include-default-style nil ;; Use our own styles
       org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />")
+;; Define functions
+(defun lf/header ()
+  "Return custom HTML header using XML"
+  (sxml-to-xml
+   '(header
+     (h1 "Welcome to Little Fox")
+     (nav
+      (a (@ (href "/")) "Home") " "
+      (a (@ (href "/blogs")) "Blogs") " "
+      (a (@ (href "/contact")) "Contact")))))
+
+(defun lf/footer ()
+  "Return custom HTML footer using XML"
+  (sxml-to-xml
+   '(footer
+     (p "© 2025 Little Fox. All rights reserved."))))
+
+(defun lf/org-html-template(contents info)
+  "Add header and footer to contents with info."
+  (concat (lf/header) contents (lf/footer)))
+
+(setq org-html-preamble (lambda (_)
+                          (lf/header))
+      org-html-postamble (lambda (_)
+                           (lf/footer)))
 
 ;; Define the publishing project
 (defun lf/blogs-sitemap (title files)
