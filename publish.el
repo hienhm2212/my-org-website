@@ -59,7 +59,7 @@
                             (exclude-footer))
   "Generate a complete HTML page with optional header, footer and metadata."
   (concat
-   "<!-- Generated on " (format-time-string "%Y-%m-%d @ %H:%M") "with Emacs Org Mode -->\n"
+   ;; "<!-- Generated on " (format-time-string "%Y-%m-%d @ %H:%M") "with Emacs Org Mode -->\n"
    "<!DOCTYPE html>"
    (sxml-to-xml
     `(html (@ (lang "en"))
